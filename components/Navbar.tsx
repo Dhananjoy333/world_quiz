@@ -5,14 +5,14 @@ const Navbar = () => {
     <>
     {/* DESKTOP NAVBAR - Hidden on mobile */}
       <header className="hidden md:flex relative flex-col items-center">
-        <nav className="navbar absolute top-6 left-1/2 -translate-x-1/2 w-[80%] h-20 flex items-center justify-between px-8 z-10">
-          <div className="flex items-center gap-3 text-[14px] text-[#facc15] tracking-[2px]">
-            <span className="text-[32px] mb-2">🌍</span>
+        <nav className="navbar absolute top-6 left-1/2 -translate-x-1/2 w-[80%] h-14 2xl:h-20 flex items-center justify-between px-8 z-10">
+          <div className="flex items-center gap-3 text-[12px] 2xl:text-[14px] text-[#facc15] tracking-[2px]">
+            <span className="text-[24px] 2xl:text-[32px] mb-2">🌍</span>
             WORLDQUIZ
           </div>
 
           <div className="flex items-center gap-8">
-            <span className="text-[#facc15] cursor-pointer hover:text-white transition-colors">LEADERBOARD</span>
+            <span className="text-[#facc15] cursor-pointer hover:text-white transition-colors text-[12px] 2xl:text-[14px]">LEADERBOARD</span>
             <Show when="signed-out">
               <SignInButton>
                 <button className="pixel-button bg-[#ef4444]">LOGIN</button>

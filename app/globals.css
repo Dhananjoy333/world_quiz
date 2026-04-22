@@ -42,7 +42,7 @@
       -8px 0 0 #000; 
   }
   .pixel-button {
-    @apply border-[3px] border-black py-1 px-4 text-sm text-white shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_black] transition-all cursor-pointer ;
+    @apply border-[3px] border-black py-1 px-4 text-[10px] 2xl:text-sm  text-white shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_black] transition-all cursor-pointer ;
   }
 
   .pixel-button-sm {
