@@ -3,49 +3,60 @@
 @theme {
   --font-sans: var(--font-poppins);
   --font-gaming: var(--font-press);
+  
+  /* Animation Definition */
+  --animate-retro-pulse: pulseColor 0.8s steps(2) infinite alternate;
+
+  @keyframes pulseColor {
+    0% {
+      color: #fde047;
+      text-shadow: 4px 4px 0px #b45309;
+      transform: scale(1);
+    }
+    100% {
+      color: #ffffff;
+      text-shadow: 4px 4px 0px #f59e0b;
+      transform: scale(1.02);
+    }
+  }
 }
 
-@layer utilities{
-  .navbar{
+@layer utilities {
+  .navbar {
     background-image: 
-      repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.1) 0px,
-        rgba(0, 0, 0, 0.1) 2px,
-        transparent 2px,
-        transparent 4px
-      ),
-      linear-gradient(
-        180deg, 
-        #475569 0%, #475569 15%,   
-        #334155 15%, #334155 85%,  
-        #1e293b 85%, #1e293b 100%  
-      );
-
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 4px),
+      linear-gradient(180deg, #475569 0%, #475569 15%, #334155 15%, #334155 85%, #1e293b 85%, #1e293b 100%);
     clip-path: polygon(
       0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
       calc(100% - 8px) 0, calc(100% - 8px) 4px, calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
       100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px), calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px), calc(100% - 8px) 100%,
       8px 100%, 8px calc(100% - 4px), 4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
     );
-
-    /* Pixel Frame Shadows */
     box-shadow:
       inset 0 4px 0 rgba(255, 255, 255, 0.1),
-      0 -4px 0 #fbbf24,
-      4px 0 0 #fbbf24,
-      0 4px 0 #fbbf24,
-      -4px 0 0 #fbbf24,
-      0 -8px 0 #000,
-      0 8px 0 #000,
-      8px 0 0 #000,
-      -8px 0 0 #000; 
-  }
-  .pixel-button {
-    @apply border-[3px] border-black py-1 px-4 text-[10px] 2xl:text-sm  text-white shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_black] transition-all cursor-pointer ;
+      0 -4px 0 #fbbf24, 4px 0 0 #fbbf24, 0 4px 0 #fbbf24, -4px 0 0 #fbbf24,
+      0 -8px 0 #000, 0 8px 0 #000, 8px 0 0 #000, -8px 0 0 #000; 
   }
 
-  .pixel-button-sm {
-    @apply border-2 border-black py-1 px-3 text-[10px] text-white shadow-[2px_2px_0_black] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all cursor-pointer;
+  .pixel-button {
+    @apply border-[3px] border-black py-1 px-4 text-[10px] 2xl:text-sm text-white shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_black] transition-all cursor-pointer;
+  }
+
+  .hero-title{
+    @apply /* Mobile */
+    gap-2 text-2xl tracking-[1px] [text-shadow:-2px_-2px_0_#000,2px_-2px_0_#000,-2px_2px_0_#000,2px_2px_0_#000]
+    /* Tablet/Medium */
+    md:gap-4 md:text-3xl md:tracking-[2px] md:[text-shadow:-3px_-3px_0_#000,3px_-3px_0_#000,-3px_3px_0_#000,3px_3px_0_#000]
+    /* Large Desktop */
+    2xl:text-5xl 2xl:gap-6
+  }
+  .mode-banner{
+    @apply/* Responsive Padding */
+    px-6 py-4 md:px-10 md:py-4 2xl:px-11.25 2xl:py-5
+    /* Pixel Shadow scaling */
+    shadow-[0_-3px_0_#fbbf24,3px_0_0_#fbbf24,0_3px_0_#fbbf24,-3px_0_0_#fbbf24,0_-6px_0_#000,0_6px_0_#000,6px_0_0_#000,-6px_0_0_#000]
+    md:shadow-[0_-4px_0_#fbbf24,4px_0_0_#fbbf24,0_4px_0_#fbbf24,-4px_0_0_#fbbf24,0_-8px_0_#000,0_8px_0_#000,8px_0_0_#000,-8px_0_0_#000]
+    /* The Clip Path */
+    [clip-path:polygon(0_8px,8px_8px,8px_0,calc(100%-8px)_0,calc(100%-8px)_8px,100%_8px,100%_calc(100%-8px),calc(100%-8px)_calc(100%-8px),calc(100%-8px)_100%,8px_100%,8px_calc(100%-8px),0_calc(100%-8px))]
   }
 }
