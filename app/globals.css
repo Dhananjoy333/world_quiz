@@ -60,3 +60,44 @@
     [clip-path:polygon(0_8px,8px_8px,8px_0,calc(100%-8px)_0,calc(100%-8px)_8px,100%_8px,100%_calc(100%-8px),calc(100%-8px)_calc(100%-8px),calc(100%-8px)_100%,8px_100%,8px_calc(100%-8px),0_calc(100%-8px))]
   }
 }
+
+@layer components {
+  /* CRT Scanline Effect */
+  .screen-flicker {
+    @apply absolute inset-0 pointer-events-none z-[3];
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.2) 50%
+      ), 
+      linear-gradient(90deg, 
+        rgba(255, 0, 0, 0.03), 
+        rgba(0, 255, 0, 0.01), 
+        rgba(0, 255, 0, 0.03)
+      );
+    background-size: 100% 3px, 3px 100%;
+  }
+
+  /* Retro "Step" Transitions */
+  .arcade-cabinet-transition {
+    transition: transform 0.2s steps(2), border-color 0.2s steps(2), background-color 0.2s steps(2);
+  }
+
+  /* LCD Glow */
+  .hi-score-glow {
+    text-shadow: 0 0 5px #f59e0b;
+  }
+
+  /* Pixel Button Depth */
+  .btn-pixel-shadow {
+    box-shadow: 0 6px 0 theme('colors.red.900'), 0 8px 0 #000;
+  }
+  
+  .btn-pixel-shadow:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 theme('colors.red.900'), 0 4px 0 #000;
+  }
+
+  .btn-locked-shadow {
+    box-shadow: 0 6px 0 theme('colors.slate.900'), 0 8px 0 #000;
+  }
+}

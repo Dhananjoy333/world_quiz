@@ -1,3 +1,4 @@
+import GameModeCard from "@/components/GameModeCard";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
@@ -31,7 +32,14 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <main className="pb-24">{/* hero section content here */}</main>
+      <main className="pb-24">
+        <GameModeCard
+        icon="🏳️"
+          title="FLAG QUIZ"
+          description="Identify nations by their flags."
+          highScore="0000"
+        />
+      </main>
     </div>
   );
 }
