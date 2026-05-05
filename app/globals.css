@@ -64,7 +64,7 @@
 @layer components {
   /* CRT Scanline Effect */
   .screen-flicker {
-    @apply absolute inset-0 pointer-events-none z-[3];
+    @apply absolute inset-0 pointer-events-none z-5;
     background: linear-gradient(
         rgba(18, 16, 16, 0) 50%, 
         rgba(0, 0, 0, 0.2) 50%
@@ -99,5 +99,38 @@
 
   .btn-locked-shadow {
     box-shadow: 0 6px 0 theme('colors.slate.900'), 0 8px 0 #000;
+  }
+
+
+  .font-arcade {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  /* Champion Flicker Animation */
+  .animate-score-flicker {
+    animation: scoreFlicker 2s infinite alternate steps(2);
+  }
+
+  @keyframes scoreFlicker {
+    from { opacity: 1; }
+    to { 
+      opacity: 0.8; 
+      text-shadow: 0 0 8px theme('colors.yellow.400'); 
+    }
+  }
+
+  /* Pulsing Star Animation */
+  .animate-star-pulse {
+    animation: pulse 1s infinite steps(2);
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  }
+
+  /* Grid Layout Utility */
+  .leaderboard-grid {
+    @apply grid grid-cols-[1fr_2fr_1fr] items-center;
   }
 }
