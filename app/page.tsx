@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </div>
 
-      <main className="flex flex-col md:flex-row gap-8 mt-20 justify-center items-center">
+      <main className="flex flex-col md:flex-row gap-8 2xl:gap-20 mt-20 justify-center items-center">
         <GameModeCard
           icon="🏳️"
           title="FLAG QUIZ"
@@ -48,23 +48,15 @@ export default function Home() {
           highScore="0000"
         />
         <GameModeCard
-          icon="🏳️"
-          title="FLAG QUIZ"
-          description="Identify nations by their flags."
+          icon="🌆"
+          title="CAPITAL QUIZ"
+          description="Test your knowledge of country capitals."
           highScore="0000"
         />
         <GameModeCard
-          icon="🏳️"
-          title="FLAG QUIZ"
-          description="Identify nations by their flags."
-          highScore="0000"
+          isComingSoon={true}
         />
-        <GameModeCard
-          icon="🏳️"
-          title="FLAG QUIZ"
-          description="Identify nations by their flags."
-          highScore="0000"
-        />
+        
       </main>
       <Leaderboard leaderboard={leaderboardData} />
     </div>

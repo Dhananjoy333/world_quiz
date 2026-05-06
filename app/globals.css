@@ -6,6 +6,13 @@
   
   /* Animation Definition */
   --animate-retro-pulse: pulseColor 0.8s steps(2) infinite alternate;
+  --font-pixel: "Press Start 2P", cursive;
+  --color-retro-blue-dark: #0b1f2a;
+  --color-retro-blue-mid: #1a3c50;
+  --color-retro-blue-light: #9ad8ff;
+  --color-retro-yellow: #ffd54a;
+  --color-retro-green: #45ff9c;
+  --color-retro-red: #ff4b4b;
 
   @keyframes pulseColor {
     0% {
@@ -133,4 +140,19 @@
   .leaderboard-grid {
     @apply grid grid-cols-[1fr_2fr_1fr] items-center;
   }
+}
+@utility pixel-border {
+  border: 8px solid white;
+  border-image-repeat: round;
+  border-image-slice: 33%;
+  border-image-source: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z" fill="white"/></svg>');
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-pixel-blink {
+  animation: blink 0.8s infinite;
 }

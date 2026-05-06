@@ -13,10 +13,7 @@ const Navbar = () => {
 
           <div className="flex items-center gap-8">
             <span className="text-[#facc15] cursor-pointer hover:text-white transition-colors text-[12px] 2xl:text-[14px]">LEADERBOARD</span>
-            <Show when="signed-out">
-              <SignInButton>
-                <button className="pixel-button bg-[#ef4444]">LOGIN</button>
-              </SignInButton>
+            <Show when="signed-out"><SignInButton><span><button className="pixel-button bg-[#ef4444]">LOGIN</button></span></SignInButton>
             </Show>
             <Show when="signed-in">
               <UserButton />
@@ -40,7 +37,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <Show when="signed-out">
             <SignInButton>
-              <button className="pixel-button-sm bg-[#ef4444]">LOGIN</button>
+              <button className="pixel-button bg-[#ef4444]">LOGIN</button>
             </SignInButton>
           </Show>
           <Show when="signed-in">
