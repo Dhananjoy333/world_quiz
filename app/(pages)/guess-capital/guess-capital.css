@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --font-arcade: "Press Start 2P", cursive;
+  --color-arcade-cyan: #00d9ff;
+  --color-arcade-pink: #ff00ff;
+  --color-arcade-yellow: #ffd400;
+  --color-arcade-red: #ff004c;
+  --color-arcade-red-dark: #800026;
+}
+
+@layer utilities {
+  .arcade-shadow-cyan {
+    box-shadow: 0 0 0 4px #000, 0 0 0 8px #00d9ff;
+  }
+  .arcade-shadow-pink {
+    box-shadow: 0 0 0 4px #000, 0 0 0 8px #ff00ff;
+  }
+  .arcade-text-3d {
+    text-shadow: 4px 4px 0px #ff00ff, 8px 8px 0px #000000;
+  }
+  .scanlines {
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 4px, 3px 100%;
+  }
+}
