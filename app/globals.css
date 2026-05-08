@@ -82,6 +82,10 @@
       -8px 0 0 #000;
   }
 
+  .music-box{
+    @apply fixed top-5 right-5 lg:left-5 lg:right-auto text-2xl lg:text-3xl cursor-pointer bg-black p-2 border-2 border-[#00eaff] rounded-md z-50 hover:shadow-[0_0_10px_#00eaff] transition-shadow
+  }
+
   /* hero Section */
   .pixel-button {
     @apply border-[3px] border-black py-1 px-4 text-[10px] 2xl:text-sm text-white shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0_black] transition-all cursor-pointer;

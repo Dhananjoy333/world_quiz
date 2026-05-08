@@ -11,7 +11,6 @@ interface QuestionResponse {
   capital: string;
 }
 
-// const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const GuessCapital: React.FC = () => {
 //   const { user } = useUser();
@@ -29,7 +28,7 @@ const GuessCapital: React.FC = () => {
   const [streak, setStreak] = useState<number>(0);
   const [multiplier, setMultiplier] = useState<number>(1);
   const [countryName, setCountryName] = useState<string>("");
-  const [correctCapital, setCorrectCapital] = useState<string>("");
+  const [correctCapital, setCorrectCapital] = useState<string>("New Zealand");
   const [userCapital, setUserCapital] = useState<string>("");
   const [answerStatus, setAnswerStatus] = useState<"correct" | "wrong" | null>(null);
   const [revealedLetters, setRevealedLetters] = useState<number>(0);
@@ -37,18 +36,18 @@ const GuessCapital: React.FC = () => {
   const [isMusicOn, setIsMusicOn] = useState<boolean>(true);
 
 //   // Initialize Audio
-//   useEffect(() => {
-//     correctAudio.current = new Audio("/sounds/correct.mp3");
-//     wrongAudio.current = new Audio("/sounds/error.mp3");
-//     bgMusic.current = new Audio("/sounds/lofi1.mp3");
+  useEffect(() => {
+    correctAudio.current = new Audio("/assets/sounds/correct.mp3");
+    wrongAudio.current = new Audio("/assets/sounds/error.mp3");
+    bgMusic.current = new Audio("/assets/sounds/lofi1.mp3");
     
-//     if (bgMusic.current) {
-//       bgMusic.current.loop = true;
-//       bgMusic.current.volume = 0.3;
-//     }
+    if (bgMusic.current) {
+      bgMusic.current.loop = true;
+      bgMusic.current.volume = 0.3;
+    }
 
-//     return () => bgMusic.current?.pause();
-//   }, []);
+    return () => bgMusic.current?.pause();
+  }, []);
 
 //   const fetchNewQuestion = async () => {
 //     try {
@@ -69,16 +68,16 @@ const GuessCapital: React.FC = () => {
 //     fetchNewQuestion();
 //   }, [user]);
 
-//   const handleHint = () => {
-//     if (!correctCapital || revealedLetters >= correctCapital.length) return;
-//     const newReveal = revealedLetters + 1;
-//     setRevealedLetters(newReveal);
-//     const hint = correctCapital
-//       .split("")
-//       .map((l, i) => (i < newReveal ? l : "_"))
-//       .join(" ");
-//     setHintDisplay(hint);
-//   };
+  const handleHint = () => {
+    if (!correctCapital || revealedLetters >= correctCapital.length) return;
+    const newReveal = revealedLetters + 1;
+    setRevealedLetters(newReveal);
+    const hint = correctCapital
+      .split("")
+      .map((l, i) => (i < newReveal ? l : "_"))
+      .join(" ");
+    setHintDisplay(hint);
+  };
 
 //   const handleSubmit = async (e: React.FormEvent) => {
 //     e.preventDefault();
@@ -149,16 +148,16 @@ const GuessCapital: React.FC = () => {
     <div className="fixed top-4 left-0 right-0 px-4 flex justify-between items-start z-50 pointer-events-none">
       <div 
         onClick={() => {/* music toggle logic */}}
-        className="pointer-events-auto text-2xl md:text-[40px] cursor-pointer bg-black p-2 border-2 border-arcade-cyan rounded-md hover:shadow-[0_0_10px_#00eaff]"
+        className="pointer-events-auto text-md md:text-[30px] cursor-pointer bg-black p-2 border-2 border-arcade-cyan rounded-md hover:shadow-[0_0_10px_#00eaff]"
       >
         {isMusicOn ? "🔊" : "🔇"}
       </div>
 
       {hintDisplay && (
-        <div className="pointer-events-auto max-w-[70%] p-2 md:p-3 bg-black text-arcade-yellow border-2 md:border-4 border-arcade-cyan text-sm md:text-[22px] tracking-[2px] md:tracking-[6px] font-bold shadow-[2px_2px_#ff00ff] text-center">
+        <div className="pointer-events-auto absolute left-20 md:left-160 md:top-20 2xl:left-330 2xl:top-56 max-w-[70%] p-2 md:p-3 bg-black text-arcade-yellow border-2 2xl:border-4 border-arcade-cyan text-[10px] 2xl:text-[22px] tracking-[2px] 2xl:tracking-[6px] font-bold shadow-[2px_2px_#ff00ff] text-center">
           💡 HINT: {hintDisplay}
         </div>
-      )}
+      )} 
     </div>
 
     {/* Main Game Container */}
@@ -227,10 +226,10 @@ const GuessCapital: React.FC = () => {
              <div className="flex flex-wrap justify-center gap-3 2xl:gap-5">
                 {[
                   { label: "Multiplier", val: `${multiplier}X` },
-                  { label: "Hint", val: "💡" },
+                  { label: "Hint", val: "💡",onClick: handleHint },
                   { label: `Streak: ${streak}`, val: "🔥" }
                 ].map((p, i) => (
-                  <div key={i} className="text-white text-center p-2 w-25 md:w-40 2xl:w-45 bg-white/5 border-2 border-transparent hover:bg-arcade-cyan hover:text-black transition-all cursor-pointer">
+                  <div key={i} onClick={p.onClick} className="text-white text-center p-2 w-25 md:w-40 2xl:w-45 bg-white/5 border-2 border-transparent hover:bg-arcade-cyan hover:text-black transition-all cursor-pointer">
                     <p className="text-2xl 2xl:text-[30px] mb-1 2xl:mb-3 drop-shadow-[0_0_5px_#00d9ff]">{p.val}</p>
                     <span className="text-[8px] 2xl:text-[10px] block uppercase">{p.label}</span>
                   </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface GameModeCardProps {
   icon: string;
@@ -15,7 +16,7 @@ const GameModeCard: React.FC<GameModeCardProps> = ({
   description,
   highScore = 0,
   isComingSoon,
-  onStart,
+  navigate,
 }) => {
   // Coming Soon State
   if (isComingSoon) {
@@ -73,12 +74,12 @@ const GameModeCard: React.FC<GameModeCardProps> = ({
         <p className="mb-2.5 h-auto font-['Press_Start_2P'] text-[10px] leading-relaxed text-slate-400 md:mb-3.75 md:h-10 md:text-[13px]">
           {description}
         </p>
-        <button 
-          onClick={onStart}
-          className="btn-pixel-shadow w-full bg-red-500/80 p-3 font-['Press_Start_2P'] text-[12px] text-white transition-all duration-100 steps(2) hover:bg-red-400 2xl:text-[15px]"
+        <Link 
+          href = {navigate}
+          className="block btn-pixel-shadow w-full bg-red-500/80 p-3 font-['Press_Start_2P'] text-[12px] text-white transition-all duration-100 steps(2) hover:bg-red-400 2xl:text-[15px]"
         >
           START
-        </button>
+        </Link>
       </div>
     </div>
   );
