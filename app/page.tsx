@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useUser } from "@clerk/nextjs";
+import { useScoreStore } from "@/store/useScoreStore";
 
 interface Player {
   id: string | number
@@ -13,9 +15,14 @@ interface Player {
 }
 
 export default function Home() {
+  const {user} = useUser()
 
-  const [highestScoreGuessCountry, setHighestScoreGuessCountry] = useState(0)
-  const [highestScoreGuessCapital, setHighestScoreGuessCapital] = useState(0)
+  const {
+    countryHighScore,
+    capitalHighScore,
+    setCountryHighScore,
+    setCapitalHighScore
+  } = useScoreStore()
   const [leaderboard, setLeaderboard] = useState<Player[]>([])
   const [isMusicOn, setIsMusicOn] = useState(false)
   const bgmusic = useRef<HTMLAudioElement | null>(null)
@@ -32,6 +39,29 @@ export default function Home() {
     useEffect(()=>{
       fetchLeaderboard()
     },[])
+
+  //fetch high score for user from backend
+  useEffect(() => {
+  const fetchHighScores = async () => {
+    try {
+      if (!user) return;
+
+      const [countryRes, capitalRes] = await Promise.all([
+        axios.get(`/api/highscore/country/${user.id}`),
+        axios.get(`/api/highscore/capital/${user.id}`)
+      ]);
+
+      setCountryHighScore(countryRes.data.highScore);
+      setCapitalHighScore(capitalRes.data.highScore);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchHighScores();
+}, [user,setCountryHighScore, setCapitalHighScore]);
+
 
   useEffect(() => {
     bgmusic.current = new Audio("/assets/sounds/lofi3.mp3")
@@ -91,14 +121,14 @@ export default function Home() {
           icon="🏳️"
           title="FLAG QUIZ"
           description="Identify nations by their flags."
-          highScore="0000"
+          highScore={countryHighScore}
         />
         <GameModeCard
           navigate = 'guess-capital'
           icon="🌆"
           title="CAPITAL QUIZ"
           description="Test your knowledge of country capitals."
-          highScore="0000"
+          highScore={capitalHighScore}
         />
         <GameModeCard
           isComingSoon={true}

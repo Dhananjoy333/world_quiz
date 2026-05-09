@@ -37,7 +37,9 @@ const Navbar = () => {
         <div className="flex items-center">
           <Show when="signed-out">
             <SignInButton>
+              <span>
               <button className="pixel-button bg-[#ef4444]">LOGIN</button>
+              </span>
             </SignInButton>
           </Show>
           <Show when="signed-in">
