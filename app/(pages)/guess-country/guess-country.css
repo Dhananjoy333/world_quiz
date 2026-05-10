@@ -13,3 +13,37 @@
 .animate-pixel-blink {
   animation: blink 0.8s infinite;
 }
+@utility pixel-border {
+  border: 8px solid white;
+  border-image-repeat: round;
+  border-image-slice: 33%;
+  border-image-source: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><path d="M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z" fill="white"/></svg>');
+}
+
+
+@layer components{
+  .left-panel{
+    @apply pixel-border w-full max-w-md lg:max-w-none p-4 lg:p-5 shadow-[8px_8px_0px_#000] flex flex-col gap-4 order-2 lg:order-1 2xl:scale-100 origin-top
+  }
+  .submit-btn{
+    @apply w-55 h-16 2xl:w-75 2xl:h-18.75 font-['Press_Start_2P'] text-[22px] text-white cursor-pointer relative bg-[#ff004c] border-none shadow-[0_10px_0_rgb(128,0,38),0_10px_20px_rgba(0,0,0,0.5)]
+    active:translate-x-[2px]
+    active:translate-y-[2px]
+    active:border-b-3
+    active:border-r-3
+  }
+  .hint-btn{
+    @apply flex-1 aspect-square bg-[#2b6d88]
+    border-t-4 border-l-4
+    border-b-4 lg:border-b-6
+    border-r-4 lg:border-r-6
+    border-t-[#4da9cc]
+    border-l-[#4da9cc]
+    border-b-[#07151d]
+    border-r-[#07151d]
+    flex flex-col items-center justify-center
+    gap-1 lg:gap-3 p-2
+    hover:bg-[#3e8eb1]
+    active:translate-x-1 active:translate-y-1
+  }
+}

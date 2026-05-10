@@ -1,36 +1,137 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import "./guess-country.css";
+import axios from "axios";
+import { useScoreStore } from "@/store/useScoreStore";
+import { useUser } from '@clerk/react'
 
-interface GameProps {
-  highestScore: number;
-  score: number;
-  CorrectAns: number;
-  WrongAns: number;
-  streak: number;
-  multiplier: number;
-  flag: string | null;
-  isMusicOn: boolean;
-  toggleMusic: () => void;
-  handleSubmit: () => void;
-  answerStatus: "correct" | "wrong" | "idle";
-}
+const GuessCountry = () => {
+  const correctAudio = useRef<HTMLAudioElement | null>(null);
+  const wrongAudio = useRef<HTMLAudioElement | null>(null);
+  const bgmusic = useRef<HTMLAudioElement | null>(null);
 
-const GuessCountry: React.FC<GameProps> = ({
-  highestScore,
-  score,
-  CorrectAns,
-  WrongAns,
-  streak,
-  multiplier,
-  flag,
-  isMusicOn,
-  toggleMusic,
-  handleSubmit,
-  answerStatus,
-}) => {
-  const [userInput, setUserInput] = useState("");
+  const { user } = useUser()
+
+  const { countryHighScore, setCountryHighScore } = useScoreStore();
+  const [score, setScore] = useState(0);
+  const [CorrectAns, setCorrectAns] = useState(0);
+  const [WrongAns, setWrongAns] = useState(0);
+  const [flag, setFlag] = useState("");
+  const [userInput, setUserInput] = useState(""); //will use to check with actual ans
+  const [correctCountry, setCorrectCountry] = useState("");
+  const [answerStatus, setAnswerStatus] = useState(null);
+  const [streak, setStreak] = useState(0);
+  const [multiplier, setMultiplier] = useState(1);
+  const [isMusicOn, setIsMusicOn] = useState(true)
+
+  console.log(correctCountry)
+
+  const getQuestion = async () => {
+    try {
+      const res = await axios.get("/api/flag");
+      setFlag(res.data.flag.toLowerCase());
+      setCorrectCountry(res.data.country);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //fetching flag data from backend
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      await getQuestion();
+    };
+    fetchQuestion();
+  }, []);
+
+  function startMusic() {
+    if (isMusicOn && bgmusic.current.paused) {
+      bgmusic.current.play().catch(() => {});
+    }
+  }
+
+  //submit logic
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let newStreak = streak;
+    let tempScore = score;
+    startMusic();
+    if (
+      userInput.trim().toLowerCase() === correctCountry.trim().toLowerCase()
+    ) {
+      setCorrectAns((prevScore) => prevScore + 1);
+
+      newStreak = streak + 1;
+      setStreak(newStreak);
+
+      let newMultiplier = 1;
+      if (newStreak >= 10) newMultiplier = 5;
+      else if (newStreak >= 5) newMultiplier = 3;
+      else if (newStreak >= 3) newMultiplier = 2;
+      else if (newStreak >= 2) newMultiplier = 1.5;
+      setMultiplier(newMultiplier);
+
+      setAnswerStatus("correct");
+      tempScore = tempScore + 100;
+      correctAudio.current?.pause();
+      correctAudio.current.currentTime = 0;
+      correctAudio.current?.play();
+    } else {
+      setWrongAns((prevScore) => prevScore + 1);
+      setStreak(0);
+      setMultiplier(1);
+      setAnswerStatus("wrong");
+      tempScore = tempScore - 100;
+      wrongAudio.current?.pause();
+      wrongAudio.current.currentTime = 0;
+      wrongAudio.current?.play();
+    }
+    setScore(tempScore);
+
+    //if score earned in session is higher than highestScore store in db
+    if (tempScore > countryHighScore) {
+      await axios.post(`api/save-score`, {
+        clerkId: user.id,
+        gameMode: "country",
+        score: tempScore,
+      });
+      setCountryHighScore(Math.max(countryHighScore, tempScore))
+    }
+
+    setUserInput(""); // Clear input after submission
+    getQuestion(); // Get new Question
+  };
+
+  useEffect(() => {
+    correctAudio.current = new Audio("/assets/sounds/correct.mp3");
+    wrongAudio.current = new Audio("/assets/sounds/error.mp3");
+    bgmusic.current = new Audio("/assets/sounds/lofi3.mp3");
+
+    if (bgmusic.current) {
+      bgmusic.current.loop = true;
+      bgmusic.current.volume = 0.3;
+    }
+
+    return () => {
+      correctAudio.current?.pause();
+      wrongAudio.current?.pause();
+      bgmusic.current?.pause();
+    };
+  }, []);
+
+  function toggleMusic() {
+    if (!bgmusic.current) return;
+    if (isMusicOn) {
+      bgmusic.current.pause();
+    } else {
+      bgmusic.current
+        .play()
+        .catch((err) => console.log("Audio play failed:", err));
+    }
+    setIsMusicOn(!isMusicOn);
+  }
 
   return (
     <div className="relative min-h-screen w-full flex flex-col lg:grid lg:grid-cols-[1fr_1.2fr_1fr] 2xl:grid-cols-[1.2fr_1.5fr_1.2fr] items-start justify-items-center px-4 md:px-10 lg:px-12 2xl:px-80 py-10 2xl:mt-24 font-pixel text-white box-border gap-8">
@@ -46,15 +147,12 @@ const GuessCountry: React.FC<GameProps> = ({
       </div>
 
       {/* Music Toggle */}
-      <button
-        onClick={toggleMusic}
-        className="fixed top-5 right-5 lg:left-5 lg:right-auto text-2xl lg:text-3xl cursor-pointer bg-black p-2 border-2 border-[#00eaff] rounded-md z-50 hover:shadow-[0_0_10px_#00eaff] transition-shadow"
-      >
+      <button onClick={toggleMusic} className="music-box">
         {isMusicOn ? "🔊" : "🔇"}
       </button>
 
       {/* Left Panel: Statistics */}
-      <aside className="pixel-border w-full max-w-md lg:max-w-none bg-retro-blue-dark p-4 lg:p-5 shadow-[8px_8px_0px_#000] flex flex-col gap-4 order-2 lg:order-1 2xl:scale-100 origin-top">
+      <aside className="left-panel bg-retro-blue-dark">
         <h2 className="text-xl 2xl:text-3xl text-retro-yellow text-center mb-2 drop-shadow-[4px_4px_0px_#cf5a00]">
           STATISTICS
         </h2>
@@ -67,7 +165,7 @@ const GuessCountry: React.FC<GameProps> = ({
             HIGHEST SCORE
           </p>
           <h1 className="text-xl 2xl:text-4xl text-retro-yellow m-0">
-            {highestScore}
+            {countryHighScore}
           </h1>
         </div>
 
@@ -106,12 +204,14 @@ const GuessCountry: React.FC<GameProps> = ({
       {/* Middle Section: Game Play */}
       <main className="flex flex-col items-center gap-6 w-full max-w-md lg:max-w-xl order-1 lg:order-2 2xl:scale-110">
         <div className="bg-black w-55 aspect-video h-45 2xl:w-100 2xl:h-76 relative p-2 border-4 lg:border-6 border-white shadow-[10px_10px_0px_rgba(0,0,0,0.5)] flex justify-center items-center">
-          <Image
-            fill
-            src="/countryFlags/ad.svg"
-            alt="country flag"
-            className="w-full h-full object-contain pixelated p-2"
-          />
+          {flag && (
+            <Image
+              fill
+              src={`/countryFlags/${flag}.svg`}
+              alt="country flag"
+              className="w-full h-full object-contain pixelated p-2"
+            />
+          )}
         </div>
 
         <input
@@ -122,31 +222,9 @@ const GuessCountry: React.FC<GameProps> = ({
           className="w-full bg-[#07151d] border-4 border-retro-blue-light p-3 lg:p-4 text-retro-green text-lg 2xl:text-2xl text-center outline-none uppercase focus:border-white focus:ring-4 focus:ring-retro-green/50 placeholder:text-[#2f5d73] placeholder:text-xs lg:placeholder:text-sm"
         />
 
-        <button
-          className="w-55 h-16 2xl:w-75
-    2xl:h-18.75
-
-    font-['Press_Start_2P']
-    text-[22px]
-    text-white
-
-    cursor-pointer
-    relative
-
-    bg-[#ff004c]
-
-    border-none
-
-    shadow-[0_10px_0_rgb(128,0,38),0_10px_20px_rgba(0,0,0,0.5)]
-
-    active:translate-x-[2px]
-    active:translate-y-[2px]
-    active:border-b-3
-    active:border-r-3"
-        >
+        <button className="submit-btn" onClick={handleSubmit}>
           SUBMIT ✓
         </button>
-
         <div className="h-8">
           {answerStatus === "correct" && (
             <p className="text-retro-green text-lg 2xl:text-xl animate-pixel-blink drop-shadow-[2px_2px_0px_#000]">
@@ -172,47 +250,13 @@ const GuessCountry: React.FC<GameProps> = ({
             HINTS
           </p>
           <div className="flex flex-row gap-4 justify-between">
-            <button
-              className=" flex-1 aspect-square bg-[#2b6d88]
-
-    border-t-4 border-l-4
-    border-b-4 lg:border-b-6
-    border-r-4 lg:border-r-6
-
-    border-t-[#4da9cc]
-    border-l-[#4da9cc]
-    border-b-[#07151d]
-    border-r-[#07151d]
-
-    flex flex-col items-center justify-center
-    gap-1 lg:gap-3 p-2
-
-    hover:bg-[#3e8eb1]
-    active:translate-x-1 active:translate-y-1"
-            >
+            <button className="hint-btn">
               <span className="text-2xl 2xl:text-4xl">💡</span>
               <span className="text-[10px] 2xl:text-[12px] text-center leading-tight">
                 Reveal Fact
               </span>
             </button>
-            <button
-              className=" flex-1 aspect-square bg-[#2b6d88]
-
-    border-t-4 border-l-4
-    border-b-4 lg:border-b-6
-    border-r-4 lg:border-r-6
-
-    border-t-[#4da9cc]
-    border-l-[#4da9cc]
-    border-b-[#07151d]
-    border-r-[#07151d]
-
-    flex flex-col items-center justify-center
-    gap-1 lg:gap-3 p-2
-
-    hover:bg-[#3e8eb1]
-    active:translate-x-1 active:translate-y-1"
-            >
+            <button className="hint-btn">
               <span className="text-2xl 2xl:text-4xl">🌍</span>
               <span className="text-[10px] 2xl:text-[12px] text-center leading-tight">
                 Continent

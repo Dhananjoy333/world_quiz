@@ -62,13 +62,11 @@ export default function Home() {
   fetchHighScores();
 }, [user,setCountryHighScore, setCapitalHighScore]);
 
-
+//handle music
   useEffect(() => {
     bgmusic.current = new Audio("/assets/sounds/lofi3.mp3")
-
     bgmusic.current.loop = true
     bgmusic.current.volume = 0.3
-
     return () => {
       bgmusic.current?.pause()
     }

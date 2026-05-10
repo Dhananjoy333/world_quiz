@@ -1,20 +1,28 @@
-import { create } from "zustand"
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface ScoreStore {
-  countryHighScore: number
-  capitalHighScore: number
+  countryHighScore: number;
+  capitalHighScore: number;
 
-  setCountryHighScore: (score: number) => void
-  setCapitalHighScore: (score: number) => void
+  setCountryHighScore: (score: number) => void;
+  setCapitalHighScore: (score: number) => void;
 }
 
-export const useScoreStore = create<ScoreStore>((set) => ({
-  countryHighScore: 0,
-  capitalHighScore: 0,
+export const useScoreStore = create<ScoreStore>()(
+  persist(
+    (set) => ({
+      countryHighScore: 0,
+      capitalHighScore: 0,
 
-  setCountryHighScore: (score) =>
-    set({ countryHighScore: score }),
+      setCountryHighScore: (score) =>
+        set({ countryHighScore: score }),
 
-  setCapitalHighScore: (score) =>
-    set({ capitalHighScore: score }),
-}))
+      setCapitalHighScore: (score) =>
+        set({ capitalHighScore: score }),
+    }),
+    {
+      name: "score-storage",
+    }
+  )
+);
