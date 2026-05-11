@@ -17,6 +17,6 @@ export async function GET() {
         return NextResponse.json(result.rows)
     } catch (error) {
         console.log(error)
-        return NextResponse.json({ message: "got error" });
+        return NextResponse.json([]);
     }
 }

@@ -25,8 +25,6 @@ const GuessCountry = () => {
   const [multiplier, setMultiplier] = useState(1);
   const [isMusicOn, setIsMusicOn] = useState(true)
 
-  console.log(correctCountry)
-
   const getQuestion = async () => {
     try {
       const res = await axios.get("/api/flag");
