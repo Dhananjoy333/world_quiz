@@ -2,12 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 
 interface GameModeCardProps {
-  icon: string;
-  title: string;
-  description: string;
+  icon?: string;
+  title?: string;
+  description?: string;
   highScore?: number;
   isComingSoon?: boolean;
   onStart?: () => void;
+  navigate?: `/${string}`;
 }
 
 const GameModeCard: React.FC<GameModeCardProps> = ({

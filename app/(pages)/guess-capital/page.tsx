@@ -24,7 +24,9 @@ const GuessCapital: React.FC = () => {
   const [countryName, setCountryName] = useState<string>("");
   const [correctCapital, setCorrectCapital] = useState<string>("");
   const [userCapital, setUserCapital] = useState<string>("");
-  const [answerStatus, setAnswerStatus] = useState(null);
+  const [answerStatus, setAnswerStatus] = useState<"correct" | "wrong" | null>(
+    null,
+  );
   const [revealedLetters, setRevealedLetters] = useState<number>(0);
   const [hintDisplay, setHintDisplay] = useState<string>("");
   const [isMusicOn, setIsMusicOn] = useState<boolean>(true);
@@ -40,12 +42,12 @@ const GuessCapital: React.FC = () => {
   };
 
   useEffect(() => {
-  if (!user) {
-    toast("Playing as guest. Scores won't be saved.", {
-      id: "guest-mode",
-    });
-  }
-}, [user]);
+    if (!user) {
+      toast("Playing as guest. Scores won't be saved.", {
+        id: "guest-mode",
+      });
+    }
+  }, [user]);
 
   //fetching country name data from backend
   useEffect(() => {
@@ -72,15 +74,14 @@ const GuessCapital: React.FC = () => {
   }
 
   function startMusic() {
+    if (!bgmusic.current) return;
     if (isMusicOn && bgmusic.current.paused) {
       bgmusic.current.play().catch(() => {});
     }
   }
 
   //submit logic
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     let newStreak = streak;
     let tempScore = score;
     startMusic();
@@ -102,7 +103,9 @@ const GuessCapital: React.FC = () => {
       setAnswerStatus("correct");
       tempScore = tempScore + 100;
       correctAudio.current?.pause();
-      correctAudio.current.currentTime = 0;
+      if (correctAudio.current) {
+        correctAudio.current.currentTime = 0;
+      }
       correctAudio.current?.play();
     } else {
       setWrongAns((prevScore) => prevScore + 1);
@@ -111,7 +114,9 @@ const GuessCapital: React.FC = () => {
       setAnswerStatus("wrong");
       tempScore = tempScore - 100;
       wrongAudio.current?.pause();
-      wrongAudio.current.currentTime = 0;
+      if (wrongAudio.current) {
+        wrongAudio.current.currentTime = 0;
+      }
       wrongAudio.current?.play();
     }
     setScore(tempScore);
@@ -123,44 +128,44 @@ const GuessCapital: React.FC = () => {
         gameMode: "capital",
         score: tempScore,
       });
-      setCapitalHighScore(Math.max(capitalHighScore, tempScore))
+      setCapitalHighScore(Math.max(capitalHighScore, tempScore));
     }
 
-      setRevealedLetters(0);
-      setHintDisplay("");
-      setUserCapital(""); // Clear input after submission
-      getQuestion(); // Get new Question
+    setRevealedLetters(0);
+    setHintDisplay("");
+    setUserCapital(""); // Clear input after submission
+    getQuestion(); // Get new Question
   };
 
   // Initialize Audio
   useEffect(() => {
-      correctAudio.current = new Audio("/assets/sounds/correct.mp3");
-      wrongAudio.current = new Audio("/assets/sounds/error.mp3");
-      bgmusic.current = new Audio("/assets/sounds/lofi3.mp3");
-  
-      if (bgmusic.current) {
-        bgmusic.current.loop = true;
-        bgmusic.current.volume = 0.3;
-      }
-  
-      return () => {
-        correctAudio.current?.pause();
-        wrongAudio.current?.pause();
-        bgmusic.current?.pause();
-      };
-    }, []);
-  
-    function toggleMusic() {
-      if (!bgmusic.current) return;
-      if (isMusicOn) {
-        bgmusic.current.pause();
-      } else {
-        bgmusic.current
-          .play()
-          .catch((err) => console.log("Audio play failed:", err));
-      }
-      setIsMusicOn(!isMusicOn);
+    correctAudio.current = new Audio("/assets/sounds/correct.mp3");
+    wrongAudio.current = new Audio("/assets/sounds/error.mp3");
+    bgmusic.current = new Audio("/assets/sounds/lofi3.mp3");
+
+    if (bgmusic.current) {
+      bgmusic.current.loop = true;
+      bgmusic.current.volume = 0.3;
     }
+
+    return () => {
+      correctAudio.current?.pause();
+      wrongAudio.current?.pause();
+      bgmusic.current?.pause();
+    };
+  }, []);
+
+  function toggleMusic() {
+    if (!bgmusic.current) return;
+    if (isMusicOn) {
+      bgmusic.current.pause();
+    } else {
+      bgmusic.current
+        .play()
+        .catch((err) => console.log("Audio play failed:", err));
+    }
+    setIsMusicOn(!isMusicOn);
+  }
 
   return (
     <div className="relative w-full min-h-screen font-arcade overflow-x-hidden">

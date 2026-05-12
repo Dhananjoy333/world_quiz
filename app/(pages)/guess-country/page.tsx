@@ -4,7 +4,7 @@ import Image from "next/image";
 import "./guess-country.css";
 import axios from "axios";
 import { useScoreStore } from "@/store/useScoreStore";
-import { useUser } from '@clerk/react'
+import { useUser } from "@clerk/react";
 import toast from "react-hot-toast";
 
 const GuessCountry = () => {
@@ -12,27 +12,27 @@ const GuessCountry = () => {
   const wrongAudio = useRef<HTMLAudioElement | null>(null);
   const bgmusic = useRef<HTMLAudioElement | null>(null);
 
-  const { user } = useUser()
+  const { user } = useUser();
 
   const { countryHighScore, setCountryHighScore } = useScoreStore();
-  const [score, setScore] = useState(0);
-  const [CorrectAns, setCorrectAns] = useState(0);
-  const [WrongAns, setWrongAns] = useState(0);
-  const [flag, setFlag] = useState("");
-  const [userInput, setUserInput] = useState(""); //will use to check with actual ans
-  const [correctCountry, setCorrectCountry] = useState("");
-  const [answerStatus, setAnswerStatus] = useState(null);
-  const [streak, setStreak] = useState(0);
-  const [multiplier, setMultiplier] = useState(1);
-  const [isMusicOn, setIsMusicOn] = useState(true)
+  const [score, setScore] = useState<number>(0);
+  const [CorrectAns, setCorrectAns] = useState<number>(0);
+  const [WrongAns, setWrongAns] = useState<number>(0);
+  const [flag, setFlag] = useState<string>("");
+  const [userInput, setUserInput] = useState<string>(""); //will use to check with actual ans
+  const [correctCountry, setCorrectCountry] = useState<string>("");
+  const [answerStatus, setAnswerStatus] = useState<"correct" | "wrong" | null>(null);
+  const [streak, setStreak] = useState<number>(0);
+  const [multiplier, setMultiplier] = useState<number>(1);
+  const [isMusicOn, setIsMusicOn] = useState<boolean>(true);
 
   useEffect(() => {
-  if (!user) {
-    toast("Playing as guest. Scores won't be saved.", {
-      id: "guest-mode",
-    });
-  }
-}, [user]);
+    if (!user) {
+      toast("Playing as guest. Scores won't be saved.", {
+        id: "guest-mode",
+      });
+    }
+  }, [user]);
 
   const getQuestion = async () => {
     try {
@@ -53,15 +53,14 @@ const GuessCountry = () => {
   }, []);
 
   function startMusic() {
+    if (!bgmusic.current) return;
     if (isMusicOn && bgmusic.current.paused) {
       bgmusic.current.play().catch(() => {});
     }
   }
 
   //submit logic
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     let newStreak = streak;
     let tempScore = score;
     startMusic();
@@ -83,7 +82,10 @@ const GuessCountry = () => {
       setAnswerStatus("correct");
       tempScore = tempScore + 100;
       correctAudio.current?.pause();
-      correctAudio.current.currentTime = 0;
+      if (correctAudio.current) {
+        correctAudio.current.currentTime = 0;
+      }
+
       correctAudio.current?.play();
     } else {
       setWrongAns((prevScore) => prevScore + 1);
@@ -92,7 +94,10 @@ const GuessCountry = () => {
       setAnswerStatus("wrong");
       tempScore = tempScore - 100;
       wrongAudio.current?.pause();
-      wrongAudio.current.currentTime = 0;
+      if (wrongAudio.current) {
+        wrongAudio.current.currentTime = 0;
+      }
+
       wrongAudio.current?.play();
     }
     setScore(tempScore);
@@ -104,7 +109,7 @@ const GuessCountry = () => {
         gameMode: "country",
         score: tempScore,
       });
-      setCountryHighScore(Math.max(countryHighScore, tempScore))
+      setCountryHighScore(Math.max(countryHighScore, tempScore));
     }
 
     setUserInput(""); // Clear input after submission

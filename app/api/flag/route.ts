@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import countries from "@/data/countries.json";
 
+type Flag = {
+  id: number;
+  name: string;
+  code: string;
+};
+
 let lastIndex = -1;
 
-function nextQuestion(list) {
+function nextQuestion(list:Flag[]) {
   let index;
 
   do {

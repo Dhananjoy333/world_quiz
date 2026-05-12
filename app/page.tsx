@@ -121,7 +121,7 @@ export default function Home() {
           highScore={countryHighScore}
         />
         <GameModeCard
-          navigate="guess-capital"
+          navigate="/guess-capital"
           icon="🌆"
           title="CAPITAL QUIZ"
           description="Test your knowledge of country capitals."

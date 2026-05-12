@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { pool } from "@/lib/neondb"
 
-export async function POST(req) {
+export async function POST(req:NextRequest) {
   try {
     const body = await req.json();
 
