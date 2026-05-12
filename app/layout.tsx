@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Press_Start_2P, Poppins } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const pressStart = Press_Start_2P({
   subsets: ["latin"],
@@ -33,6 +34,12 @@ export default function RootLayout({
       >
         <body className="min-h-full flex flex-col">
           {children}
+          <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 2500,
+          }}
+        />
         </body>
       </html>
     </ClerkProvider>

@@ -5,6 +5,7 @@ import { useUser } from "@clerk/react";
 import "./guess-capital.css";
 import Image from "next/image";
 import { useScoreStore } from "@/store/useScoreStore";
+import toast from "react-hot-toast";
 
 const GuessCapital: React.FC = () => {
   const correctAudio = useRef<HTMLAudioElement | null>(null);
@@ -28,8 +29,6 @@ const GuessCapital: React.FC = () => {
   const [hintDisplay, setHintDisplay] = useState<string>("");
   const [isMusicOn, setIsMusicOn] = useState<boolean>(true);
 
-  console.log(correctCapital)
-
   const getQuestion = async () => {
     try {
       const res = await axios.get("/api/country");
@@ -39,6 +38,14 @@ const GuessCapital: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+  if (!user) {
+    toast("Playing as guest. Scores won't be saved.", {
+      id: "guest-mode",
+    });
+  }
+}, [user]);
 
   //fetching country name data from backend
   useEffect(() => {
@@ -110,7 +117,7 @@ const GuessCapital: React.FC = () => {
     setScore(tempScore);
 
     //if score earned in session is higher than highestScore store in db
-    if (tempScore > capitalHighScore) {
+    if (user && tempScore > capitalHighScore) {
       await axios.post(`api/save-score`, {
         clerkId: user.id,
         gameMode: "capital",

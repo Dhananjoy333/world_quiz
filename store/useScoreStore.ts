@@ -7,6 +7,8 @@ interface ScoreStore {
 
   setCountryHighScore: (score: number) => void;
   setCapitalHighScore: (score: number) => void;
+
+  resetScores: () => void;
 }
 
 export const useScoreStore = create<ScoreStore>()(
@@ -20,6 +22,12 @@ export const useScoreStore = create<ScoreStore>()(
 
       setCapitalHighScore: (score) =>
         set({ capitalHighScore: score }),
+
+      resetScores: () =>
+        set({
+          countryHighScore: 0,
+          capitalHighScore: 0,
+        }),
     }),
     {
       name: "score-storage",

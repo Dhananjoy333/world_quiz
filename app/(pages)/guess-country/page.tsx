@@ -5,6 +5,7 @@ import "./guess-country.css";
 import axios from "axios";
 import { useScoreStore } from "@/store/useScoreStore";
 import { useUser } from '@clerk/react'
+import toast from "react-hot-toast";
 
 const GuessCountry = () => {
   const correctAudio = useRef<HTMLAudioElement | null>(null);
@@ -24,6 +25,14 @@ const GuessCountry = () => {
   const [streak, setStreak] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [isMusicOn, setIsMusicOn] = useState(true)
+
+  useEffect(() => {
+  if (!user) {
+    toast("Playing as guest. Scores won't be saved.", {
+      id: "guest-mode",
+    });
+  }
+}, [user]);
 
   const getQuestion = async () => {
     try {
@@ -89,7 +98,7 @@ const GuessCountry = () => {
     setScore(tempScore);
 
     //if score earned in session is higher than highestScore store in db
-    if (tempScore > countryHighScore) {
+    if (user && tempScore > countryHighScore) {
       await axios.post(`api/save-score`, {
         clerkId: user.id,
         gameMode: "country",
