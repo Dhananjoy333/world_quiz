@@ -1,5 +1,5 @@
-import React from 'react';
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
 interface GameModeCardProps {
   icon?: string;
@@ -37,11 +37,16 @@ const GameModeCard: React.FC<GameModeCardProps> = ({
         </div>
 
         <div className="p-3.75 text-center">
-          <h3 className="mb-2 font-['Press_Start_2P'] text-[14px] text-white md:text-[20px]">???</h3>
+          <h3 className="mb-2 font-['Press_Start_2P'] text-[14px] text-white md:text-[20px]">
+            ???
+          </h3>
           <p className="mb-2.5 font-['Press_Start_2P'] text-[10px] leading-relaxed text-slate-400 md:mb-3.75 md:h-10 md:text-[13px]">
             More game modes are being developed!
           </p>
-          <button className="btn-locked-shadow w-full cursor-not-allowed bg-slate-500 p-3 font-['Press_Start_2P'] text-[12px] text-white md:text-[15px]" disabled>
+          <button
+            className="btn-locked-shadow w-full cursor-not-allowed bg-slate-500 p-3 font-['Press_Start_2P'] text-[12px] text-white md:text-[15px]"
+            disabled
+          >
             LOCKED
           </button>
         </div>
@@ -55,7 +60,7 @@ const GameModeCard: React.FC<GameModeCardProps> = ({
       {/* The Marquee (Top) */}
       <div className="flex h-10 items-center justify-center border-b-4 border-black bg-slate-700 px-2 md:h-12.5">
         <span className="hi-score-glow font-['Press_Start_2P'] text-[8px] text-amber-400 md:text-[10px]">
-          HI-SCORE: {highScore.toString().padStart(5, '0')}
+          HI-SCORE: {highScore.toString().padStart(5, "0")}
         </span>
       </div>
 
@@ -75,12 +80,14 @@ const GameModeCard: React.FC<GameModeCardProps> = ({
         <p className="mb-2.5 h-auto font-['Press_Start_2P'] text-[10px] leading-relaxed text-slate-400 md:mb-3.75 md:h-10 md:text-[13px]">
           {description}
         </p>
-        <Link 
-          href = {navigate}
-          className="block btn-pixel-shadow w-full bg-red-500/80 p-3 font-['Press_Start_2P'] text-[12px] text-white transition-all duration-100 steps(2) hover:bg-red-400 2xl:text-[15px]"
-        >
-          START
-        </Link>
+        {navigate && (
+          <Link
+            href={navigate}
+            className="block btn-pixel-shadow w-full bg-red-500/80 p-3 font-['Press_Start_2P']"
+          >
+            START
+          </Link>
+        )}
       </div>
     </div>
   );
