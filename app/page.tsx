@@ -17,23 +17,6 @@ interface Player {
 export default function Home() {
   const { user } = useUser();
 
-  //save new user to db
-  useEffect(() => {
-    const createUser = async () => {
-      try {
-        if (!user) return;
-        const tag = user.id.slice(-4);
-        await axios.post("/api/create-user", {
-          clerkId: user.id,
-          username: `${user.firstName}#${tag}`,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    createUser();
-  }, [user]);
-
   const {
     countryHighScore,
     capitalHighScore,

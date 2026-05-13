@@ -98,7 +98,7 @@ Planned features for future versions:
 ## Clone the repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/Dhananjoy333/world_quiz.git
 ```
 
 ## Navigate into the project
