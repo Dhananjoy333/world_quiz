@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 WorldQuiz
 
-## Getting Started
+A fun and interactive geography quiz game built with **Next.js** where players can test their knowledge of world countries, capitals, and flags.
 
-First, run the development server:
+Compete on the **global leaderboard**, track your **personal high scores**, and improve your geography knowledge while enjoying a smooth retro-style gaming experience.
+
+---
+
+# 🎮 Game Modes
+
+Currently the game includes two quiz modes:
+
+## 🏳️ Flag Quiz
+Guess the **country name** by looking at its **flag**.
+
+## 🌆 Capital Quiz
+Guess the **capital city** from the **country name**.
+
+More exciting game modes are planned for future updates.
+
+---
+
+# ✨ Features
+
+- 🎮 Multiple geography quiz game modes
+- 🏆 Global leaderboard system
+- 📈 Personal high score tracking
+- 🔐 Authentication with Clerk
+- ⚡ Faster performance with optimized data loading
+- 🗂️ JSON-based country & flag data handling
+- 🧠 Zustand state management
+- 🎵 Background music and sound effects
+- 🌐 REST API integration
+- 🎨 Retro pixel-style UI
+- 📱 Responsive interface for different screen sizes
+
+---
+
+# 🚀 Performance Improvements (Next.js Refactor)
+
+The project was originally built using a full database flow:
+
+```txt
+Frontend → Backend → NeonDB
+```
+
+After refactoring to **Next.js**, country and flag data are now loaded from local JSON files:
+
+```txt
+Frontend → Backend → JSON
+```
+
+This significantly improved the app’s initial loading speed and overall responsiveness.
+
+Additional improvements include:
+
+- ⚡ Faster quiz rendering
+- 📦 Reduced database dependency for static quiz data
+- 🧠 Zustand-based global state management for highscores
+- 🔄 Shared highscore state between homepage and game modes
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+- Next.js
+- React
+- TypeScript
+- Axios
+- Zustand
+- Clerk Authentication
+- React Hot Toast
+
+## Backend
+- Node.js
+- Next.js API Routes
+- Rest API
+- PostgreSQL (NeonDB)
+
+---
+
+# 🧠 Future Improvements
+
+Planned features for future versions:
+
+- 🗺️ Map-based quiz mode
+- ⏱️ Timed challenges
+- 📊 Player statistics dashboard
+- 🧑‍🤝‍🧑 Multiplayer mode
+- 🌍 More geography quiz categories
+- 📱 Progressive Web App (PWA) support
+
+---
+
+# ⚙️ Installation
+
+## Clone the repository
+
+```bash
+git clone <your-repository-url>
+```
+
+## Navigate into the project
+
+```bash
+cd worldquiz
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# 👨‍💻 Author
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Developed by **Dhananjoy Brahma**
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you like this project, feel free to ⭐ the repository!
